@@ -1,0 +1,60 @@
+repository:
+  name: nextjs-template
+  description: "A curated collection of production-ready Next.js project templates — scaffold a full-stack app in seconds"
+  homepage: https://github.com/anomalyco/nextjs-template#readme
+  topics: nextjs, template, scaffold, react, typescript, tailwindcss, boilerplate, starter
+  private: false
+  has_issues: true
+  has_projects: true
+  has_wiki: true
+  has_downloads: true
+  default_branch: main
+  allow_squash_merge: true
+  allow_merge_commit: true
+  allow_rebase_merge: true
+  delete_branch_on_merge: true
+
+labels:
+  - name: bug
+    color: d73a4a
+    description: Something isn't working
+  - name: enhancement
+    color: a2eeef
+    description: New feature or request
+  - name: documentation
+    color: 0075ca
+    description: Improvements or additions to documentation
+  - name: good first issue
+    color: 7057ff
+    description: Good for newcomers
+  - name: help wanted
+    color: 008672
+    description: Extra attention is needed
+  - name: question
+    color: d876e3
+    description: Further information is requested
+  - name: dependencies
+    color: 0366d6
+    description: Pull requests that update a dependency file
+  - name: automated
+    color: cccccc
+    description: Automated PRs (dependabot, etc.)
+  - name: needs-review
+    color: fbca04
+    description: Awaiting maintainer review
+
+branches:
+  - name: main
+    protection:
+      required_pull_request_reviews:
+        required_approving_review_count: 1
+        dismiss_stale_reviews: true
+        require_code_owner_reviews: true
+      required_status_checks:
+        strict: true
+        contexts:
+          - "CI / lint (18.x)"
+          - "CI / typecheck (18.x)"
+          - "CI / test (18.x)"
+      enforce_admins: true
+      restrictions: null

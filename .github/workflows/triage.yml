@@ -1,0 +1,50 @@
+name: Issue Triage
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  issues: write
+
+jobs:
+  triage:
+    name: Auto-label new issues
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const title = context.payload.issue.title.toLowerCase();
+            const body = context.payload.issue.body?.toLowerCase() || '';
+            const labels = [];
+
+            // Bug detection
+            if (title.includes('bug') || body.includes('bug') || body.includes('error') || body.includes('broken')) {
+              labels.push('bug');
+            }
+
+            // Feature request detection
+            if (title.includes('feature') || body.includes('feature request') || body.includes('would like')) {
+              labels.push('enhancement');
+            }
+
+            // Question detection
+            if (title.includes('question') || body.includes('how to') || body.includes('help')) {
+              labels.push('question');
+            }
+
+            // Template detection
+            if (body.includes('minimal')) labels.push('template:minimal');
+            if (body.includes('with-auth') || body.includes('auth')) labels.push('template:with-auth');
+            if (body.includes('api-only') || body.includes('api')) labels.push('template:api-only');
+            if (body.includes('with-ecommerce') || body.includes('ecommerce')) labels.push('template:with-ecommerce');
+
+            if (labels.length > 0) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                labels: labels
+              });
+            }

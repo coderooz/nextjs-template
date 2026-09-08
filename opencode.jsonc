@@ -1,0 +1,385 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "deepseek-v4-flash-free",
+
+  "instructions": [
+    "AGENTS.md"
+  ],
+
+  "permission": {
+    "read": "allow",
+    "glob": "allow",
+    "grep": "allow",
+    "edit": "allow",
+    "bash": "allow",
+    "webfetch": "allow",
+    "websearch": "allow",
+    "question": "allow",
+    "todowrite": "allow",
+    "skill": "allow",
+    "lsp": "allow",
+    "task": "allow"
+  },
+
+  "agent": {
+    "build": {
+      "description": "Default primary agent for all template development work. Creates, updates, and validates templates. Full tool access.",
+      "mode": "primary",
+      "temperature": 0.2,
+      "steps": 50,
+
+      "permission": {
+        "task": {
+          "*": "deny",
+          "planner": "allow",
+          "coder": "allow",
+          "template-builder": "allow",
+          "tester": "allow",
+          "code-reviewer": "allow",
+          "docs-validator": "allow",
+          "analyzer": "allow",
+          "setup": "allow",
+          "issue-handler": "allow"
+        }
+      }
+    },
+
+    "plan": {
+      "description": "Analysis and planning mode — read-only exploration. Use to analyze template structure, plan new templates, and review without making changes.",
+      "mode": "primary",
+      "temperature": 0.7,
+      "steps": 30,
+
+      "permission": {
+        "read": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "question": "allow",
+        "todowrite": "allow",
+        "lsp": "allow",
+
+        "edit": "deny",
+        "write": "deny",
+        "bash": {
+          "*": "ask",
+          "git *": "allow",
+          "gh *": "allow",
+          "grep *": "allow"
+        }
+      }
+    },
+
+    "planner": {
+      "description": "Creates detailed architecture plans for new templates and features. Reads project requirements and produces implementation specs.",
+      "mode": "subagent",
+      "temperature": 0.3,
+      "steps": 30,
+
+      "permission": {
+        "read": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "question": "allow",
+        "todowrite": "allow",
+
+        "edit": "deny",
+        "write": "deny",
+        "bash": "deny"
+      }
+    },
+
+    "coder": {
+      "description": "Implements production-quality Next.js code. Follows project conventions: TypeScript strict, Server Components by default, shadcn/ui patterns with cva() and cn(), Zod validation for APIs.",
+      "mode": "subagent",
+      "temperature": 0.2,
+      "steps": 50,
+
+      "permission": {
+        "read": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "edit": "allow",
+        "write": "allow",
+        "question": "allow",
+        "todowrite": "allow",
+        "bash": {
+          "*": "ask",
+          "npm *": "allow",
+          "npx *": "allow",
+          "node *": "allow",
+          "git *": "allow"
+        }
+      }
+    },
+
+    "template-builder": {
+      "description": "Scaffolds new project templates. Given a feature spec, creates complete template directory with all necessary files: package.json, configs, app routes, components, middleware, env examples.",
+      "mode": "subagent",
+      "temperature": 0.2,
+      "steps": 50,
+
+      "permission": {
+        "read": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "edit": "allow",
+        "write": "allow",
+        "question": "allow",
+        "todowrite": "allow",
+        "bash": {
+          "*": "ask",
+          "npm *": "allow",
+          "npx *": "allow"
+        }
+      }
+    },
+
+    "tester": {
+      "description": "Runs tests and adds coverage. Uses Playwright for E2E tests and Vitest for unit/component tests.",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "steps": 30,
+
+      "permission": {
+        "read": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "edit": "allow",
+        "write": "allow",
+        "question": "allow",
+        "todowrite": "allow",
+        "bash": {
+          "*": "ask",
+          "npx playwright *": "allow",
+          "npm run *": "allow",
+          "npx vitest *": "allow"
+        }
+      }
+    },
+
+    "code-reviewer": {
+      "description": "Reviews code for quality, type safety, patterns, and best practices. Checks TypeScript, React, Next.js conventions.",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "steps": 30,
+
+      "permission": {
+        "read": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "question": "allow",
+        "todowrite": "allow",
+
+        "edit": "deny",
+        "write": "deny",
+        "bash": "deny"
+      }
+    },
+
+    "docs-validator": {
+      "description": "Cross-references template code against offline documentation (next.js, react, tailwindcss, clerk-docs) to verify correctness and best practices.",
+      "mode": "subagent",
+      "temperature": 0.1,
+      "steps": 30,
+
+      "permission": {
+        "read": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "webfetch": "allow",
+        "question": "allow",
+        "todowrite": "allow",
+
+        "edit": "deny",
+        "write": "deny",
+        "bash": "deny"
+      }
+    },
+
+    "analyzer": {
+      "description": "Analyzes template codebases for architecture quality, pattern consistency, tech debt, and improvement opportunities.",
+      "mode": "subagent",
+      "temperature": 0.2,
+      "steps": 30,
+
+      "permission": {
+        "read": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "question": "allow",
+        "todowrite": "allow",
+
+        "edit": "deny",
+        "bash": "deny"
+      }
+    },
+
+    "setup": {
+      "description": "Configures deployment, environment variables, CI/CD workflows, and project scaffolding for new template users.",
+      "mode": "subagent",
+      "temperature": 0.2,
+      "steps": 30,
+
+      "permission": {
+        "read": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "edit": "allow",
+        "write": "allow",
+        "question": "allow",
+        "todowrite": "allow",
+        "bash": {
+          "*": "ask",
+          "npm *": "allow",
+          "npx *": "allow",
+          "git *": "allow"
+        }
+      }
+    },
+
+    "issue-handler": {
+      "description": "Manages GitHub issues and pull requests via gh CLI. Can create, read, update, close, and list issues; create and review PRs.",
+      "mode": "subagent",
+      "temperature": 0.2,
+      "steps": 30,
+
+      "permission": {
+        "bash": {
+          "*": "ask",
+          "gh issue *": "allow",
+          "gh pr *": "allow",
+          "gh repo *": "allow",
+          "gh api *": "allow",
+          "gh search *": "allow",
+          "gh label *": "allow",
+          "gh release *": "allow",
+          "git *": "allow"
+        },
+        "read": "allow",
+        "glob": "allow",
+        "grep": "allow",
+        "webfetch": "allow",
+        "question": "allow",
+        "todowrite": "allow",
+        "edit": "deny"
+      }
+    }
+  },
+
+  "command": {
+    "create-template": {
+      "template": "Create a new project template. Given a template name and feature description, scaffold the complete template directory structure with all necessary files. Read existing templates/ first to understand the pattern. Include: package.json, tsconfig.json, next.config.ts, tailwind config, postcss config, src/app directory with layout.tsx and page.tsx, src/lib/utils.ts, .env.example, and README.md. The template should be immediately usable with 'npm install && npm run dev'.",
+      "description": "Scaffold a new template",
+      "agent": "template-builder",
+      "subtask": true
+    },
+
+    "use-template": {
+      "template": "Copy a template to a target directory. First validate the template exists in templates/<name>/, then copy all files to the target directory, updating package.json name field and README.md.",
+      "description": "Copy template to target dir",
+      "agent": "setup",
+      "subtask": true
+    },
+
+    "validate-template": {
+      "template": "Validate a template for completeness and correctness. Check: package.json has all required deps, tsconfig has strict mode, next.config.ts is valid, tailwind config is present, app directory has layout.tsx and page.tsx, middleware.ts if auth template, .env.example is documented, README.md has setup instructions.",
+      "description": "Validate template completeness",
+      "agent": "docs-validator",
+      "subtask": true
+    },
+
+    "analyze": {
+      "template": "Analyze the template codebase thoroughly: architecture, pattern consistency, tech debt, type coverage, and testing gaps. Produce a report with severity ratings.",
+      "description": "Analyze templates for quality",
+      "agent": "analyzer",
+      "subtask": true
+    },
+
+    "plan": {
+      "template": "Create an implementation plan for a new template or feature expansion. Include: module map, file structure, data flow, component tree, and route design. Do NOT write any code.",
+      "description": "Create implementation plan",
+      "agent": "planner",
+      "subtask": true
+    },
+
+    "code": {
+      "template": "Implement code following the validated plan. Use project conventions: TypeScript strict mode, Server Components by default, shadcn/ui patterns with cva() and cn(), Tailwind CSS 4. Write production-quality code.",
+      "description": "Implement code from plan",
+      "agent": "coder",
+      "subtask": true
+    },
+
+    "review": {
+      "template": "Review code for quality, type safety, and patterns. Check: no `any`, proper React patterns, correct Next.js conventions, proper error handling, and performance considerations.",
+      "description": "Review code quality",
+      "agent": "code-reviewer",
+      "subtask": true
+    },
+
+    "validate-docs": {
+      "template": "Cross-reference template code against offline docs at C:\\Code_Works\\Docs\\ (next.js/, react/, tailwindcss/, clerk-docs/). Report discrepancies with file paths and line numbers.",
+      "description": "Validate against offline docs",
+      "agent": "docs-validator",
+      "subtask": true
+    },
+
+    "check": {
+      "template": "Run full validation on a template: cd templates/<name> && npm run typecheck && npm run lint. Report and fix issues.",
+      "description": "Typecheck + lint template",
+      "agent": "build",
+      "subtask": false
+    },
+
+    "setup": {
+      "template": "Configure deployment for a template: create vercel.json, Dockerfile, .github/workflows/ci.yml, and .env.example with all required env vars documented.",
+      "description": "Configure deployment",
+      "agent": "setup",
+      "subtask": true
+    },
+
+    "gh-issue": {
+      "template": "Manage GitHub issues: $ARGUMENTS. Use gh issue list/gh issue view/gh issue create/gh issue close/gh issue comment as needed.",
+      "description": "Manage GitHub issues",
+      "agent": "issue-handler",
+      "subtask": true
+    },
+
+    "gh-pr": {
+      "template": "Manage GitHub pull requests: $ARGUMENTS. Use gh pr list/gh pr view/gh pr create/gh pr checkout/gh pr review as needed.",
+      "description": "Manage GitHub pull requests",
+      "agent": "issue-handler",
+      "subtask": true
+    }
+  },
+
+  "formatter": {
+    "prettier": {
+      "extensions": [".ts", ".tsx", ".js", ".jsx", ".json", ".css", ".md", ".yaml", ".yml"]
+    }
+  },
+
+  "lsp": {
+    "typescript": {
+      "command": ["typescript-language-server", "--stdio"],
+      "extensions": [".ts", ".tsx", ".js", ".jsx"]
+    }
+  },
+
+  "compaction": {
+    "auto": true,
+    "prune": true,
+    "reserved": 10000
+  },
+
+  "watcher": {
+    "ignore": [
+      ".git/**",
+      "**/node_modules/**",
+      "**/.next/**",
+      "**/dist/**",
+      "**/__pycache__/**"
+    ]
+  },
+
+  "shell": "powershell"
+}

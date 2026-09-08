@@ -1,0 +1,67 @@
+{
+  "name": "nextjs-template",
+  "version": "0.1.0",
+  "private": false,
+  "description": "A curated collection of production-ready Next.js project templates — scaffold a full-stack app in seconds",
+  "keywords": [
+    "nextjs",
+    "template",
+    "scaffold",
+    "react",
+    "typescript",
+    "tailwindcss",
+    "clerk",
+    "mongoose",
+    "mongodb",
+    "boilerplate",
+    "starter",
+    "app-router"
+  ],
+  "homepage": "https://github.com/anomalyco/nextjs-template#readme",
+  "bugs": {
+    "url": "https://github.com/anomalyco/nextjs-template/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anomalyco/nextjs-template.git"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Anomalyco",
+    "url": "https://github.com/anomalyco"
+  },
+  "type": "module",
+  "bin": {
+    "nextjs-template": "./cli/index.js",
+    "create-nextjs-template": "./cli/index.js"
+  },
+  "files": [
+    "cli/",
+    "templates/",
+    "scripts/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "node scripts/build.js",
+    "lint": "node scripts/lint-templates.js",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md,yml}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,css,md,yml}\"",
+    "prepare": "node scripts/build.js",
+    "prepublishOnly": "npm run lint",
+    "test": "node scripts/validate-all.js"
+  },
+  "engines": {
+    "node": ">=18.17.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "prettier": "^3.4.0",
+    "prettier-plugin-tailwindcss": "^0.6.0",
+    "typescript": "^5.7.0"
+  }
+}

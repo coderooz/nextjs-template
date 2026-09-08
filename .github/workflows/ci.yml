@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Lint & Format
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 22.x]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: npm
+      - run: npm ci
+      - run: npx prettier --check "**/*.{ts,tsx,js,jsx,json,css,md,yml}" --ignore-unknown
+        name: Check formatting
+
+  typecheck:
+    name: TypeCheck
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        template: [minimal, with-auth, api-only]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: npm
+      - run: npm ci
+      - run: cp -r node_modules templates/${{ matrix.template }}/
+      - run: npx tsc --noEmit
+        working-directory: templates/${{ matrix.template }}
+        name: TypeCheck ${{ matrix.template }}
+
+  validate-templates:
+    name: Validate Templates
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: npm
+      - run: npm ci
+      - name: Validate template structures
+        run: |
+          for dir in templates/*/; do
+            name=$(basename "$dir")
+            echo "=== Validating $name ==="
+            test -f "$dir/package.json" || { echo "FAIL: $name missing package.json"; exit 1; }
+            test -f "$dir/README.md" || { echo "FAIL: $name missing README.md"; exit 1; }
+            test -f "$dir/.env.example" && echo "  + .env.example" || echo "  - .env.example (optional)"
+            echo "  PASS: $name"
+          done

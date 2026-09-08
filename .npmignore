@@ -1,0 +1,17 @@
+.github/
+.opencode/
+.node_modules/
+scripts/
+test/
+tests/
+coverage/
+tmp/
+temp/
+.vscode/
+.idea/
+*.tsbuildinfo
+.next-env.d.ts
+
+# Keep only what's needed in the package
+# templates/ is included via "files" in package.json
+# cli/ is included via "files" in package.json

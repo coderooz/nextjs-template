@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: OpenCode Discussion
+    url: https://github.com/anomalyco/opencode/discussions
+    about: General questions about the OpenCode agent system
+  - name: Template Documentation
+    url: https://github.com/anomalyco/nextjs-template#readme
+    about: Check the README for template usage and setup instructions
