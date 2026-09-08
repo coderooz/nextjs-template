@@ -34,3 +34,9 @@ coverage/
 # Temp
 tmp/
 temp/
+
+# Governance workspace
+.workspace/
+
+# MCP runtime (ephemeral)
+.mcp-runtime.json
